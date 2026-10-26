@@ -18,5 +18,5 @@ jobs:
         with:
           python-version: '3.11'
       - run: python -m unittest discover -s tests -v
-      - run: python scripts/radar.py validate examples/opportunities.example.json
-      - run: python scripts/radar.py demo --workspace radar-demo
+      - run: python scripts/chancescout.py validate examples/opportunities.example.json
+      - run: python scripts/chancescout.py demo --workspace chancescout-demo

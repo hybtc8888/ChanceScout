@@ -1,4 +1,4 @@
-# AI找路子
+# ChanceScout · AI找路子
 
 把这个仓库交给你的 AI 助手，让它找出**仍可参与、有官方依据、值得行动的公开机会**。
 
@@ -9,7 +9,7 @@
 复制下面这段即可。助手不必支持技能安装：能读取网页、理解指令，就能先按说明工作。
 
 ```text
-请阅读 https://github.com/hybtc8888/opportunity-radar 的 SKILL.md，按“AI找路子”工作流执行。
+请阅读 https://github.com/hybtc8888/ChanceScout 的 SKILL.md，按 ChanceScout（AI找路子）工作流执行。
 先检查你实际能用的联网、网页读取、文件存储和代码执行能力。
 手动找一期 AI 开发与内容创作机会，优先个人或小团队能参与的项目。
 核验官方规则、时间、资格、收益和参与路线，说明未知项，不凑数。
@@ -19,7 +19,7 @@
 
 如果助手打不开 GitHub 页面，可改发原始入口：
 
-https://raw.githubusercontent.com/hybtc8888/opportunity-radar/main/SKILL.md
+https://raw.githubusercontent.com/hybtc8888/ChanceScout/main/SKILL.md
 
 ## 怎样运行
 
@@ -46,9 +46,9 @@ Dot 可使用已连接电脑上的 Codex；云端助手也可直接读工作流�
 Python 工具仅使用标准库，不需要安装依赖或配置 API Key。
 
 ```bash
-git clone https://github.com/hybtc8888/opportunity-radar.git
-cd opportunity-radar
-python scripts/radar.py demo --workspace radar-demo
+git clone https://github.com/hybtc8888/ChanceScout.git
+cd ChanceScout
+python scripts/chancescout.py demo --workspace chancescout-demo
 ```
 
 这会生成**明确标注虚构**的示例报告，不会联网或报名。
@@ -56,8 +56,8 @@ python scripts/radar.py demo --workspace radar-demo
 真实使用时，由助手按 [记录格式](references/records.md) 输出候选 JSON，然后运行：
 
 ```bash
-python scripts/radar.py validate candidates.json
-python scripts/radar.py ingest candidates.json --workspace radar-data
+python scripts/chancescout.py validate candidates.json
+python scripts/chancescout.py ingest candidates.json --workspace chancescout-data
 ```
 
 每次运行输出 JSON 回执，包含报告、观察记录和历史文件路径。再次录入同一项目不会重复；规则变化会标为更新，未复查的旧项目不会混入本期推荐。
@@ -66,9 +66,9 @@ python scripts/radar.py ingest candidates.json --workspace radar-data
 
 ## 安装为 Codex 技能
 
-让 Codex 使用其技能安装器安装本仓库根目录的 `SKILL.md`，技能名为 `opportunity-radar`。也可将完整仓库放入宿主支持的技能目录。保留 `references/`、`schemas/` 和 `scripts/`。
+让 Codex 使用其技能安装器安装本仓库根目录的 `SKILL.md`，技能名为 `chancescout`。也可将完整仓库放入宿主支持的技能目录。保留 `references/`、`schemas/` 和 `scripts/`。
 
-使用：`使用 $opportunity-radar，手动更新一期 AI 开发与内容创作机会。`
+使用：`使用 $chancescout，手动更新一期 AI 开发与内容创作机会。`
 
 ## 结果应包含什么
 

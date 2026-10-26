@@ -8,7 +8,7 @@ import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location("radar", ROOT / "scripts/radar.py")
+spec = importlib.util.spec_from_file_location("chancescout", ROOT / "scripts/chancescout.py")
 radar = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(radar)
 
@@ -89,8 +89,8 @@ class PersistenceTests(unittest.TestCase):
             self.assertEqual(Path(receipt["history"]).read_bytes(), before)
 
     def test_cli_runs_in_unicode_directory(self):
-        with tempfile.TemporaryDirectory(prefix="radar-") as tmp:
-            result = subprocess.run([sys.executable, str(ROOT / "scripts/radar.py"), "demo", "--workspace", str(Path(tmp) / "机会记录")], capture_output=True, encoding="utf-8")
+        with tempfile.TemporaryDirectory(prefix="chancescout-") as tmp:
+            result = subprocess.run([sys.executable, str(ROOT / "scripts/chancescout.py"), "demo", "--workspace", str(Path(tmp) / "机会记录")], capture_output=True, encoding="utf-8")
             self.assertEqual(result.returncode, 0, result.stderr)
             receipt = json.loads(result.stdout)
             self.assertTrue(Path(receipt["report"]).is_file())

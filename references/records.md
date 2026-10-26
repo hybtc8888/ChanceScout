@@ -24,9 +24,9 @@ The deadline field preserves the source wording. This tool does not parse arbitr
 The helper writes only inside the explicitly selected workspace:
 
 ```text
-radar-data/
+chancescout-data/
   opportunities.jsonl
-  .state.lock
+  .chancescout.lock
   runs/<unique-run>/
     digest.md
     observations.json

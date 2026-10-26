@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Portable observation storage. No network, model calls, or scheduling."""
+"""ChanceScout observation storage. No network, model calls, or scheduling."""
 from __future__ import annotations
 
 import argparse
@@ -134,7 +134,7 @@ def merge(existing, incoming, checked_at):
 def atomic_write(path, text):
     path = Path(path)
     with tempfile.NamedTemporaryFile("w", encoding="utf-8", newline="\n", dir=path.parent,
-                                     prefix=".radar-", delete=False) as handle:
+                                     prefix=".chancescout-", delete=False) as handle:
         temporary = Path(handle.name)
         try:
             handle.write(text)
@@ -152,7 +152,7 @@ def atomic_write(path, text):
 
 @contextlib.contextmanager
 def workspace_lock(workspace):
-    with (workspace / ".state.lock").open("a+b") as handle:
+    with (workspace / ".chancescout.lock").open("a+b") as handle:
         handle.seek(0, 2)
         if handle.tell() == 0:
             handle.write(b"0")
@@ -194,7 +194,7 @@ def is_main(record):
 
 
 def render(observed, generated_at, fictional=False):
-    title = "AI找路子 · 虚构示例 · 不可申请" if fictional else "AI找路子"
+    title = "ChanceScout · AI找路子 · 虚构示例 · 不可申请" if fictional else "ChanceScout · AI找路子"
     lines = [f"# {title}", "", f"生成时间：{generated_at}", "",
              "本工具校验格式并整理记录；来源事实由研究助手核验。首次发现不等于首次发布。", "",
              f"本期观察 {len(observed)} 条；主要机会 {sum(is_main(r) for r in observed)} 条。", ""]
@@ -261,10 +261,10 @@ def main(argv=None):
     validate_cmd.add_argument("input", type=Path)
     ingest_cmd = sub.add_parser("ingest", help="merge researched observations and write a report")
     ingest_cmd.add_argument("input", type=Path)
-    ingest_cmd.add_argument("--workspace", type=Path, default=Path("radar-data"))
+    ingest_cmd.add_argument("--workspace", type=Path, default=Path("chancescout-data"))
     ingest_cmd.add_argument("--checked-at", help="timezone-aware observation time, if not present in each record")
     demo_cmd = sub.add_parser("demo", help="write a clearly fictional offline example")
-    demo_cmd.add_argument("--workspace", type=Path, default=Path("radar-demo"))
+    demo_cmd.add_argument("--workspace", type=Path, default=Path("chancescout-demo"))
     args = parser.parse_args(argv)
     try:
         if args.command == "validate":

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Opportunity observation",
+  "title": "ChanceScout opportunity observation",
   "type": "object",
   "required": ["organizer", "program", "edition", "channel", "status", "benefit", "eligibility", "costs_and_rights", "deadline", "source_urls", "application_instructions", "application_access", "evidence_level", "evidence", "limitations", "next_action"],
   "properties": {
