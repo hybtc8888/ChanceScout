@@ -5,7 +5,7 @@ metadata:
   short-description: "Evidence-linked opportunities for developers and creators"
 ---
 
-# Opportunity Radar
+# AI找路子
 
 Produce a concise opportunity scan with source-backed facts, practical participation requirements, and a next action. Default topics are AI development and content creation; follow a narrower or broader user request.
 

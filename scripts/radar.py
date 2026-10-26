@@ -194,7 +194,7 @@ def is_main(record):
 
 
 def render(observed, generated_at, fictional=False):
-    title = "虚构示例 · 不可申请" if fictional else "机会雷达"
+    title = "AI找路子 · 虚构示例 · 不可申请" if fictional else "AI找路子"
     lines = [f"# {title}", "", f"生成时间：{generated_at}", "",
              "本工具校验格式并整理记录；来源事实由研究助手核验。首次发现不等于首次发布。", "",
              f"本期观察 {len(observed)} 条；主要机会 {sum(is_main(r) for r in observed)} 条。", ""]

@@ -1,5 +1,5 @@
 interface:
-  display_name: "Opportunity Radar · 机会雷达"
+  display_name: "AI找路子"
   short_description: "Verified opportunities for developers and creators"
   default_prompt: "Use $opportunity-radar for a manual scan of current developer and creator opportunities, with official evidence and clear next actions."
 policy:
