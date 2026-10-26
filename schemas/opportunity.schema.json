@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Opportunity observation",
+  "type": "object",
+  "required": ["organizer", "program", "edition", "channel", "status", "benefit", "eligibility", "costs_and_rights", "deadline", "source_urls", "application_instructions", "application_access", "evidence_level", "evidence", "limitations", "next_action"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "organizer": {"type": "string", "minLength": 1},
+    "program": {"type": "string", "minLength": 1},
+    "edition": {"type": "string", "minLength": 1},
+    "channel": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "enum": ["open", "ongoing", "upcoming", "closed", "unverified"]},
+    "benefit": {"type": "string", "minLength": 1},
+    "eligibility": {"type": "string", "minLength": 1},
+    "costs_and_rights": {"type": "string", "minLength": 1},
+    "deadline": {"type": "string", "minLength": 1},
+    "source_urls": {"type": "array", "minItems": 1, "items": {"type": "string", "format": "uri", "pattern": "^https?://"}},
+    "application_url": {"type": ["string", "null"], "format": "uri", "pattern": "^https?://"},
+    "application_instructions": {"type": "string", "minLength": 1},
+    "application_access": {"type": "string", "enum": ["public_form_checked", "login_required", "official_email", "official_instructions", "unconfirmed"]},
+    "evidence_level": {"type": "string", "enum": ["official_verified", "corroborated", "unverified"]},
+    "evidence": {"type": "array", "items": {"type": "object", "required": ["url", "supports"], "properties": {"url": {"type": "string", "format": "uri", "pattern": "^https?://"}, "supports": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}}}},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "next_action": {"type": "string", "minLength": 1},
+    "recommended": {"type": "boolean"},
+    "fictional": {"type": "boolean"},
+    "first_seen_at": {"type": "string", "format": "date-time"},
+    "last_checked_at": {"type": "string", "format": "date-time"},
+    "change": {"type": "string", "enum": ["new", "updated", "unchanged"]}
+  },
+  "additionalProperties": true
+}

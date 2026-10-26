@@ -1,0 +1,42 @@
+[
+  {
+    "organizer": "Fictional Example Lab",
+    "program": "Example AI Builder Call",
+    "edition": "2099-demo",
+    "channel": "ai-development",
+    "status": "open",
+    "benefit": "虚构奖品，用于演示，不可申请",
+    "eligibility": "虚构示例，无真实参与资格",
+    "costs_and_rights": "虚构条款；不对应真实活动",
+    "deadline": "2099-04-30，仅为虚构日期",
+    "source_urls": ["https://example.invalid/builder/rules"],
+    "application_url": "https://example.invalid/builder/apply",
+    "application_instructions": "虚构入口，不可访问或申请",
+    "application_access": "unconfirmed",
+    "evidence_level": "official_verified",
+    "evidence": [{"url": "https://example.invalid/builder/rules", "supports": ["benefit", "deadline"]}],
+    "limitations": ["所有项目、组织、日期、收益、链接和核验状态均为虚构"],
+    "next_action": "仅查看格式，不申请",
+    "fictional": true
+  },
+  {
+    "organizer": "Fictional Example Studio",
+    "program": "Example Creator Call",
+    "edition": "2099-demo",
+    "channel": "content-creation",
+    "status": "upcoming",
+    "benefit": "虚构展映机会，不存在真实权益",
+    "eligibility": "虚构示例",
+    "costs_and_rights": "虚构条款",
+    "deadline": "2099-05-01开放，仅演示即将开放分区",
+    "source_urls": ["https://example.invalid/creator/rules"],
+    "application_url": null,
+    "application_instructions": "虚构流程",
+    "application_access": "unconfirmed",
+    "evidence_level": "unverified",
+    "evidence": [],
+    "limitations": ["虚构示例，无官方事实"],
+    "next_action": "仅查看格式",
+    "fictional": true
+  }
+]

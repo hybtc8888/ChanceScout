@@ -1,0 +1,15 @@
+# Private workspaces and observations
+/radar-data/
+/radar-demo/
+/work/
+/outputs/
+/config.json
+/candidates.json
+*.jsonl
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.DS_Store
+Thumbs.db

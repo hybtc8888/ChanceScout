@@ -1,0 +1,7 @@
+{
+  "focus": ["ai-development", "content-creation"],
+  "timezone": "Asia/Shanghai",
+  "language": "zh-CN",
+  "research": {"recent_days": 7, "open_call_lookback_days": 90, "target_total": 6},
+  "delivery": {"mode": "manual", "enabled": false}
+}
