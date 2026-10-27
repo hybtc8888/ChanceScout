@@ -1,7 +1,39 @@
 {
-  "focus": ["ai-development", "content-creation"],
+  "setup_status": "unconfigured",
+  "focus": [],
+  "regions": [],
+  "work_mode": "any",
+  "workspace": "chancescout-data",
   "timezone": "Asia/Shanghai",
   "language": "zh-CN",
-  "research": {"recent_days": 7, "open_call_lookback_days": 90, "target_total": 6},
-  "delivery": {"mode": "manual", "enabled": false}
+  "research": {
+    "recent_days": 7,
+    "open_call_lookback_days": 90,
+    "target_total": 6
+  },
+  "demand": {
+    "sources": [
+      "xiaohongshu",
+      "reddit"
+    ],
+    "xiaohongshu": {
+      "keywords": [
+        "付费",
+        "有偿"
+      ],
+      "sort": "latest"
+    },
+    "reddit": {
+      "keywords": [
+        "I would pay",
+        "willing to pay",
+        "I'd pay"
+      ],
+      "sort": "new"
+    }
+  },
+  "delivery": {
+    "mode": "manual",
+    "enabled": false
+  }
 }

@@ -1,6 +1,8 @@
 # Private workspaces and observations
 /chancescout-data/
 /chancescout-demo/
+/chancescout-demand-demo/
+/demand-candidates.json
 /work/
 /outputs/
 /config.json

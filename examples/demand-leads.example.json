@@ -1,0 +1,62 @@
+[
+  {
+    "canonical_key": "fictional-creator-caption-review",
+    "title": "虚构：创作者的字幕复核",
+    "customer": "虚构的双语课程创作者",
+    "problem": "逐句对照两种语言的字幕耗时",
+    "channel": "content-creation",
+    "lead_type": "product",
+    "platform": "reddit",
+    "disposition": "research",
+    "evidence": [
+      {
+        "url": "https://example.invalid/discussion/comment/42",
+        "published_at": "2026-10-01T09:00:00Z",
+        "access": "original_page",
+        "speaker": "buyer",
+        "signal": "willingness",
+        "quote": "虚构：如果能保留术语并标出有问题的字幕，我愿意试付一笔费用。",
+        "context": "虚构的条件性意愿，没有成交凭证。"
+      }
+    ],
+    "keywords": ["bilingual subtitle review"],
+    "alternatives": [],
+    "seo": [],
+    "assessment": "虚构演示：先验证术语复核是否比现有流程省时。",
+    "limitations": ["全部内容为虚构", "未取得搜索量、KD 或 CPC", "未发生付款"],
+    "next_action": "仅用于演示格式，不联系或购买。",
+    "fictional": true
+  },
+  {
+    "canonical_key": "fictional-research-interview-task",
+    "title": "虚构：线上资料整理任务",
+    "customer": "虚构的资料委托者",
+    "problem": "有偿整理一批已获授权的资料，按约定格式交付。",
+    "channel": "资料整理",
+    "lead_type": "task",
+    "platform": "xiaohongshu",
+    "budget": "虚构报价：60元/次",
+    "region": "线上，不限地区",
+    "work_mode": "remote",
+    "deadline": "虚构时间要求：2026-10-30前",
+    "disposition": "research",
+    "evidence": [
+      {
+        "url": "https://example.invalid/note/fictional-task",
+        "published_at": "2026-10-27T09:00:00+08:00",
+        "access": "original_page",
+        "speaker": "buyer",
+        "signal": "willingness",
+        "quote": "虚构：有偿找人整理资料，60元一次。",
+        "context": "虚构任务与报价，仅演示来源、时间、地区和交付字段；没有真实委托或付款。"
+      }
+    ],
+    "keywords": ["有偿"],
+    "alternatives": [],
+    "seo": [],
+    "assessment": "虚构示例：任务条件需在行动前核对。",
+    "limitations": ["全部内容为虚构", "未验证身份、余量或付款"],
+    "next_action": "仅查看示例格式，不联系或提交。",
+    "fictional": true
+  }
+]

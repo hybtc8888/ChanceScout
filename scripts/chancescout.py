@@ -3,73 +3,20 @@
 from __future__ import annotations
 
 import argparse
-import contextlib
 import datetime as dt
 import hashlib
-import html
 import json
-import os
 from pathlib import Path
-import re
 import sys
-import tempfile
 import unicodedata
-from urllib.parse import quote, urlsplit
 import uuid
+
+from common import timestamp, http_url, check, atomic_write, workspace_lock, md, link, read_json_records
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = json.loads((ROOT / "schemas/opportunity.schema.json").read_text(encoding="utf-8"))
 MATERIAL = set(SCHEMA["required"]) - {"evidence"}
 MATERIAL.update({"application_url", "recommended"})
-
-
-def timestamp(value: str) -> dt.datetime:
-    parsed = dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
-    if parsed.tzinfo is None or parsed.utcoffset() is None:
-        raise ValueError("timestamps must include a timezone")
-    return parsed
-
-
-def http_url(value: str) -> bool:
-    try:
-        parsed = urlsplit(value)
-        return parsed.scheme in {"https", "http"} and bool(parsed.hostname) and not any(c.isspace() for c in value)
-    except ValueError:
-        return False
-
-
-def check(value, spec, path="record"):
-    """Check the types/constraints used by this project's small schema."""
-    types = spec.get("type", [])
-    types = [types] if isinstance(types, str) else types
-    actual = ("null" if value is None else "boolean" if isinstance(value, bool)
-              else "object" if isinstance(value, dict) else "array" if isinstance(value, list)
-              else "string" if isinstance(value, str) else "number")
-    if types and actual not in types:
-        raise ValueError(f"{path}: expected {types}, got {actual}")
-    if "enum" in spec and value not in spec["enum"]:
-        raise ValueError(f"{path}: unknown value {value!r}")
-    if isinstance(value, dict):
-        for key in spec.get("required", []):
-            if key not in value:
-                raise ValueError(f"{path}: missing {key}")
-        for key, child in spec.get("properties", {}).items():
-            if key in value:
-                check(value[key], child, f"{path}.{key}")
-    elif isinstance(value, list):
-        if len(value) < spec.get("minItems", 0):
-            raise ValueError(f"{path}: not enough items")
-        for index, child in enumerate(value):
-            check(child, spec.get("items", {}), f"{path}[{index}]")
-    elif isinstance(value, str):
-        if len(value.strip()) < spec.get("minLength", 0):
-            raise ValueError(f"{path}: empty string")
-        if "pattern" in spec and not re.search(spec["pattern"], value):
-            raise ValueError(f"{path}: invalid format")
-        if spec.get("format") == "uri" and not http_url(value):
-            raise ValueError(f"{path}: expected an HTTP(S) URL")
-        if spec.get("format") == "date-time":
-            timestamp(value)
 
 
 def identity(record):
@@ -93,12 +40,7 @@ def validate(records):
 
 
 def read_records(path):
-    text = Path(path).read_text(encoding="utf-8-sig").strip()
-    if not text:
-        return []
-    values = json.loads(text) if text.startswith("[") else [json.loads(line) for line in text.splitlines() if line.strip()]
-    if not isinstance(values, list):
-        raise ValueError("input must be a JSON array or JSONL")
+    values = read_json_records(path)
     validate(values)
     return values
 
@@ -129,62 +71,6 @@ def merge(existing, incoming, checked_at):
         by_id[key] = current
         observed.append(current)
     return list(by_id.values()), observed
-
-
-def atomic_write(path, text):
-    path = Path(path)
-    with tempfile.NamedTemporaryFile("w", encoding="utf-8", newline="\n", dir=path.parent,
-                                     prefix=".chancescout-", delete=False) as handle:
-        temporary = Path(handle.name)
-        try:
-            handle.write(text)
-            handle.flush()
-            os.fsync(handle.fileno())
-        except BaseException:
-            handle.close()
-            temporary.unlink(missing_ok=True)
-            raise
-    try:
-        os.replace(temporary, path)
-    finally:
-        temporary.unlink(missing_ok=True)
-
-
-@contextlib.contextmanager
-def workspace_lock(workspace):
-    with (workspace / ".chancescout.lock").open("a+b") as handle:
-        handle.seek(0, 2)
-        if handle.tell() == 0:
-            handle.write(b"0")
-            handle.flush()
-        handle.seek(0)
-        if os.name == "nt":
-            import msvcrt
-            lock = lambda: msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
-            unlock = lambda: msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
-        else:
-            import fcntl
-            lock = lambda: fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-            unlock = lambda: fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
-        try:
-            lock()
-        except OSError as exc:
-            raise ValueError("workspace is being updated by another run; retry after it finishes") from exc
-        try:
-            yield
-        finally:
-            handle.seek(0)
-            unlock()
-
-
-def md(value):
-    text = html.escape(str(value), quote=False).replace("\n", " ")
-    return re.sub(r"([\\`*_{\[\]}|])", r"\\\1", text)
-
-
-def link(url, label):
-    # URLs are validated separately; encode Markdown delimiters without changing their destination.
-    return f"[{label}]({quote(url, safe=':/?&=#%+@~;,')})"
 
 
 def is_main(record):
@@ -254,7 +140,24 @@ def ingest(incoming, workspace, checked_at=None, demo=False):
         return receipt
 
 
-def main(argv=None):
+def record_kind(records, requested="auto"):
+    if requested != "auto":
+        return requested
+    kinds = set()
+    for record in records:
+        if not isinstance(record, dict):
+            raise ValueError("each observation must be an object")
+        opportunity = "organizer" in record and "program" in record
+        demand = "canonical_key" in record
+        if opportunity == demand:
+            raise ValueError("cannot infer record kind; supply --kind opportunity or --kind demand")
+        kinds.add("opportunity" if opportunity else "demand")
+    if len(kinds) > 1:
+        raise ValueError("keep opportunities and demand leads in separate input batches")
+    return next(iter(kinds), "opportunity")
+
+
+def main(argv=None, default_kind="auto"):
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
     validate_cmd = sub.add_parser("validate", help="check observation data; no network or file changes")
@@ -265,14 +168,29 @@ def main(argv=None):
     ingest_cmd.add_argument("--checked-at", help="timezone-aware observation time, if not present in each record")
     demo_cmd = sub.add_parser("demo", help="write a clearly fictional offline example")
     demo_cmd.add_argument("--workspace", type=Path, default=Path("chancescout-demo"))
+    for command in (validate_cmd, ingest_cmd, demo_cmd):
+        command.add_argument("--kind", choices=("auto", "opportunity", "demand"), default=default_kind,
+                             help="infer the input format by default; demo defaults to opportunity")
+    demo_cmd.set_defaults(workspace=None)
     args = parser.parse_args(argv)
     try:
-        if args.command == "validate":
-            result = {"valid": True, "records": len(read_records(args.input)), "facts_verified_by_tool": False}
-        elif args.command == "demo":
-            result = ingest(read_records(ROOT / "examples/opportunities.example.json"), args.workspace, demo=True)
+        incoming = [] if args.command == "demo" else read_json_records(args.input)
+        kind = record_kind(incoming, args.kind)
+        validate_records, store_records = validate, ingest
+        if kind == "demand":
+            from demand_leads import validate as validate_records, ingest as store_records
+        if args.command == "demo":
+            fixture = "demand-leads" if kind == "demand" else "opportunities"
+            workspace = args.workspace or Path("chancescout-demand-demo" if kind == "demand" else "chancescout-demo")
+            incoming = read_json_records(ROOT / f"examples/{fixture}.example.json")
+            validate_records(incoming)
+            result = store_records(incoming, workspace, demo=True)
+        elif args.command == "validate":
+            validate_records(incoming)
+            result = {"valid": True, "records": len(incoming), "facts_verified_by_tool": False}
         else:
-            result = ingest(read_records(args.input), args.workspace, args.checked_at)
+            result = store_records(incoming, args.workspace, args.checked_at)
+        result["kind"] = kind
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
     except (ValueError, OSError) as exc:

@@ -8,6 +8,7 @@ import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
 spec = importlib.util.spec_from_file_location("chancescout", ROOT / "scripts/chancescout.py")
 radar = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(radar)

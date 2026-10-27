@@ -1,6 +1,6 @@
 interface:
   display_name: "ChanceScout · AI找路子"
-  short_description: "Verified opportunities for developers and creators"
-  default_prompt: "Use $chancescout for a manual scan of current developer and creator opportunities, with official evidence and clear next actions."
+  short_description: "Source-backed opportunities and paid-demand leads"
+  default_prompt: "Use $chancescout for a manual scan with my saved preferences, or general results if none are supplied, with sources and clear next actions."
 policy:
   allow_implicit_invocation: true

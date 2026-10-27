@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChanceScout demand lead (not a validated business)",
+  "type": "object",
+  "required": ["canonical_key", "title", "customer", "problem", "channel", "disposition", "evidence", "keywords", "alternatives", "seo", "assessment", "limitations", "next_action"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "canonical_key": {"type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"},
+    "title": {"type": "string", "minLength": 1},
+    "customer": {"type": "string", "minLength": 1},
+    "problem": {"type": "string", "minLength": 1},
+    "channel": {"type": "string", "minLength": 1},
+    "lead_type": {"type": "string", "enum": ["task", "product", "unknown"]},
+    "platform": {"type": "string", "minLength": 1},
+    "budget": {"type": ["string", "null"]},
+    "region": {"type": ["string", "null"]},
+    "work_mode": {"type": "string", "enum": ["any", "remote", "onsite", "hybrid", "unknown"]},
+    "deadline": {"type": ["string", "null"]},
+    "disposition": {"type": "string", "enum": ["research", "discarded"]},
+    "evidence": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["url", "published_at", "access", "speaker", "signal", "quote", "context"],
+        "properties": {
+          "url": {"type": "string", "format": "uri"},
+          "published_at": {"type": ["string", "null"], "format": "date-time"},
+          "access": {"type": "string", "enum": ["original_page", "search_excerpt", "secondary"]},
+          "speaker": {"type": "string", "enum": ["buyer", "seller", "unknown"]},
+          "signal": {"type": "string", "enum": ["pain", "willingness", "paid_self_report", "promotion", "negative", "other"]},
+          "quote": {"type": "string", "minLength": 1},
+          "context": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "keywords": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "alternatives": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["name", "url", "finding"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1},
+          "url": {"type": "string", "format": "uri"},
+          "finding": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "seo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["keyword", "provider", "market", "period", "currency", "retrieval", "source_url", "volume", "global_volume", "kd", "cpc", "note"],
+        "properties": {
+          "keyword": {"type": "string", "minLength": 1},
+          "provider": {"type": "string", "minLength": 1},
+          "market": {"type": "string", "minLength": 1},
+          "period": {"type": ["string", "null"], "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"},
+          "currency": {"type": ["string", "null"], "pattern": "^[A-Z]{3}$"},
+          "retrieval": {"type": "string", "enum": ["direct", "author_screenshot", "unavailable"]},
+          "source_url": {"type": "string", "format": "uri"},
+          "volume": {"type": ["number", "null"], "minimum": 0},
+          "global_volume": {"type": ["number", "null"], "minimum": 0},
+          "kd": {"type": ["number", "null"], "minimum": 0, "maximum": 100},
+          "cpc": {"type": ["number", "null"], "minimum": 0},
+          "note": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "assessment": {"type": "string", "minLength": 1},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "next_action": {"type": "string", "minLength": 1},
+    "fictional": {"type": "boolean"},
+    "first_seen_at": {"type": "string", "format": "date-time"},
+    "last_checked_at": {"type": "string", "format": "date-time"},
+    "change": {"type": "string", "enum": ["new", "updated", "unchanged"]}
+  },
+  "additionalProperties": true
+}
