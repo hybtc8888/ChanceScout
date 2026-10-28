@@ -25,6 +25,12 @@
 
 助手负责搜索、读原文和判断；项目不绑定模型、搜索服务或 SEO 账号。需求表达不等于成交，能打开帖子不等于仍有名额。
 
+## 推荐浏览器接入
+
+需要读取已登录的小红书页面时，推荐可选安装 [huashu-chrome（花叔浏览器扩展）](https://github.com/alchaincyf/huashu-chrome)：它通过 Chrome 扩展和本地 MCP 服务，让助手使用现有登录状态。按上游说明安装后，让实际执行任务读取页面正文并截图验证。
+
+不使用 Chrome 时，继续使用宿主已有的浏览器工具；访问不到的来源如实标记。ChanceScout 不强制安装扩展，不要求开启 TUN。安装步骤、Dot 交接和超时排查见 [浏览器接入](docs/browser.md)。
+
 ## 可选的本地工具
 
 Python 3.11+，仅用标准库。助手完成研究后，用一个入口整理两类数据：
@@ -53,6 +59,6 @@ Codex 可用技能安装器安装本仓库根目录，名称为 `chancescout`；
 python -m unittest discover -s tests -v
 ```
 
-本地 Codex 已完成 Reddit 与小红书研究试跑；Dot、Muse 的具体账号与工具仍需在各自宿主验证。GitHub Actions 检查 Windows、macOS、Linux 的本地工具。
+本地 Codex 已完成 Reddit 与小红书研究试跑；本机 Dot 已通过花叔 MCP 入口完成小红书研究及正文、截图验收。具体账号、版本与工具仍需在目的宿主验证，Muse 尚未实测。GitHub Actions 检查 Windows、macOS、Linux 的本地工具。
 
 [MIT License](LICENSE) · [来源与实现范围](NOTICE.md)
