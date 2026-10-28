@@ -12,7 +12,9 @@ python scripts/chancescout.py ingest candidates.json --workspace chancescout-dat
 | 公开机会 | [schema](../schemas/opportunity.schema.json) · [虚构例子](../examples/opportunities.example.json) | 主办方＋项目＋期次；已有显式ID保留 | `opportunities.jsonl` / `runs/` |
 | 付费需求 | [schema](../schemas/demand-lead.schema.json) · [虚构例子](../examples/demand-leads.example.json) | `canonical_key`；任务和产品的归并方式见[研究说明](demand-research.md) | `demand-leads.jsonl` / `demand-runs/` |
 
-可以共用一个历史工作目录。每次都有独立的 `digest.md`、`observations.json` 和 `receipt.json`。两种格式不混在同一输入批次；空批默认按公开机会处理，可用 `--kind demand` 指定需求。
+可以共用一个历史工作目录。每批分别生成 `digest.md`、`observations.json` 和 `receipt.json`。两种格式不混在同一输入批次；空批默认按公开机会处理，可用 `--kind demand` 指定需求。
+
+每期最终报告按 [简报模板](report-template.md) 汇总两类记录，固定交代公开机会、小红书和 Reddit 三路结果。Python 的批次简报作为归档明细，不代替整期汇总；没有推荐条目的来源也须保留覆盖状态。无文件能力时直接在对话交付同样结构。
 
 ## 字段与变化
 

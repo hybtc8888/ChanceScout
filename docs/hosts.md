@@ -30,7 +30,8 @@ Codex 可安装技能；Dot 可复用其已连接电脑上的工作目录；Muse
 - `work_mode`：`any` / `remote` / `onsite` / `hybrid`。
 - `workspace`：两类历史的共用目录，相对配置文件所在目录解析，默认 `chancescout-data`。
 - `research.recent_days`：付费需求时效，默认7天。公开机会另按实际参与窗口核验。
-- `demand.sources`：默认小红书与 Reddit；缺少某来源的可用访问能力时标出未完成部分。
+- `research.target_total`：整期推荐数量参考，不是保底条数或各来源的配额。
+- `demand.sources`：默认小红书与 Reddit；未启用或不可访问的来源仍在 [简报模板](../references/report-template.md) 中说明原因，公开机会另行研究。三路结果均需交代，不硬凑比例。
 
 用户可直接说“只看上海、允许远程”“改为近24小时”“恢复不限方向”。只改其明确提出的设置，其余偏好、ID、备注和历史保留；每次简报开头说明实际采用的条件。
 
